@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  user-service:
+    build: .
+    ports:
+      - "9000:9000"
+    depends_on:
+      - redis
+    # Other configurations for your user-service...
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6380:6379"

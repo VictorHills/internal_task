@@ -1,0 +1,9 @@
+framework:
+  messenger:
+    transports:
+      async: '%env(MESSENGER_TRANSPORT_DSN)%'
+
+    # Here we define the routing
+    routing:
+      # Commands
+      'App\Message\Command\CreateUserCommand': async

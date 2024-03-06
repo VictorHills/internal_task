@@ -1,0 +1,22 @@
+parameters:
+
+services:
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    public: false       # Whether services should be public by default
+
+  # Service definition for UserCreatedEventHandler
+  App\Message\Event\UserCreatedEventHandler:
+    arguments:
+      $logger: '@monolog.logger'
+
+  # Automatically makes classes in the src/ directory available to be used as services
+  # This creates a service per class whose id is the fully-qualified class name
+  App\:
+    resource: '../src/*'
+    exclude:
+      - '../src/DependencyInjection/'
+      - '../src/Entity/'
+      - '../src/Kernel.php'
+      - '../src/{Directory}/' # Exclude any other directories that should not be scanned for services
