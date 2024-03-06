@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Message\Command\CreateUserCommand;
+use App\Message\Event\UserCreatedEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,7 +30,7 @@ class UserController extends AbstractController
     public function createUser(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
-        $command = new CreateUserCommand($data['email'], $data['firstName'], $data['lastName']);
+        $command = new UserCreatedEvent($data['email'], $data['firstName'], $data['lastName']);
         $this->bus->dispatch($command);
 
         $data = [

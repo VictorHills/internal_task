@@ -1,30 +1,31 @@
-# Use the official PHP 8.1 FPM image as a base
+# Dockerfile for the "users" service using Nginx
+
+# official PHP image
 FROM php:8.1-fpm
 
-# Install the DOM extension
-RUN apt-get update && \
-    apt-get install -y libxml2-dev && \
-    docker-php-ext-install dom
+# Install Nginx
+RUN apt-get update && apt-get install -y nginx
 
-# Update package repository and install required packages
-RUN apt-get update && apt-get install -y \
-    libzip-dev \
-    zip \
-    && docker-php-ext-install zip \
-    && pecl install redis \
-    && docker-php-ext-enable redis
+# Install the PHP extensions you need
+RUN docker-php-ext-install pdo pdo_mysql
 
-# Copy your application code to the container (make sure you're in the right directory)
-COPY . /var/www/html
+# Set the working directory in the container
+WORKDIR /var/www
 
-# Set working directory
-WORKDIR /var/www/html
+# Copy the application source code to the container
+COPY . /var/www/
 
-# If you're using Composer, you can also include the composer install command:
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-# COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-# RUN composer install --no-interaction
+# Install dependencies with Composer
+RUN composer install --no-dev --optimize-autoloader
 
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php-fpm"]
+# Configure Nginx for Symfony
+COPY ./docker/users/nginx.conf /etc/nginx/sites-available/default
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx and PHP-FPM
+CMD service php8.1-fpm start && nginx -g 'daemon off;'

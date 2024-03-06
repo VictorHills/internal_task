@@ -6,4 +6,4 @@ framework:
     # Here we define the routing
     routing:
       # Commands
-      'App\Message\Command\CreateUserCommand': async
+      'App\Message\Event\UserCreatedEvent': async

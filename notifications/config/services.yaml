@@ -8,6 +8,7 @@ services:
 
   # Service definition for UserCreatedEventHandler
   App\Message\Event\UserCreatedEventHandler:
+    tags: [ 'messenger.message_handler' ]
     arguments:
       $logger: '@monolog.logger'
 

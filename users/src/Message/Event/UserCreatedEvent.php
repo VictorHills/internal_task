@@ -1,13 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace App\Message\Event;
 
-/**
- * @method setEmail(string $string)
- * @method setFirstName(string $string)
- * @method setLastName(string $string)
- */
-class User
+class UserCreatedEvent
 {
     private string $email;
     private string $firstName;

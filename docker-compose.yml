@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  users:
+    build:
+      context: ./users
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - redis
+    environment:
+      REDIS_DSN: redis://redis:6379
+
+  notifications:
+    build:
+      context: ./notifications
+      dockerfile: Dockerfile
+    ports:
+      - "9000:80"
+    depends_on:
+      - redis
+    environment:
+      REDIS_DSN: redis://redis:6379
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
